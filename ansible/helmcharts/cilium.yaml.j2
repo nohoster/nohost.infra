@@ -1,0 +1,33 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  repo: https://helm.cilium.io/
+  chart: cilium
+  targetNamespace: kube-system
+  bootstrap: true
+  valuesContent: |-
+    operator:
+      replicas: 1
+    # kubeproxy replacement config
+    kubeProxyReplacement: true
+    k8sServiceHost: "{{ ansible_play_hosts[0] }}"
+    k8sServicePort: "6443"
+    # hubble config
+    hubble:
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+    # ingress config
+    ingressController:
+      enabled: false
+    bandwidthManager:
+      enabled: true
+    ipam:
+      mode: "cluster-pool"
+      operator:
+        clusterPoolIPv4PodCIDRList: "10.42.0.0/16"
+        clusterPoolIPv4MaskSize: 24

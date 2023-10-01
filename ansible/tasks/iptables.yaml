@@ -1,0 +1,19 @@
+- name: Remove iptables persitent
+  apt:
+    name:
+    - iptables-persitent
+    - netfilter-persistent
+    state: absent
+
+- name: Iptables flush filter
+  ansible.builtin.iptables:
+    chain: "{{ item }}"
+    flush: yes
+  with_items:  [ 'INPUT', 'FORWARD', 'OUTPUT', 'InstanceServices' ]
+
+- name: Iptables flush nat
+  ansible.builtin.iptables:
+    table: nat
+    chain: '{{ item }}'
+    flush: yes
+  with_items: [ 'INPUT', 'OUTPUT', 'PREROUTING', 'POSTROUTING' ]
