@@ -5,15 +5,6 @@
     - netfilter-persistent
     state: absent
 
+#Shell Command is faster than module
 - name: Iptables flush filter
-  ansible.builtin.iptables:
-    chain: "{{ item }}"
-    flush: yes
-  with_items:  [ 'INPUT', 'FORWARD', 'OUTPUT', 'InstanceServices' ]
-
-- name: Iptables flush nat
-  ansible.builtin.iptables:
-    table: nat
-    chain: '{{ item }}'
-    flush: yes
-  with_items: [ 'INPUT', 'OUTPUT', 'PREROUTING', 'POSTROUTING' ]
+  shell: iptables -F && iptables -t nat -F
