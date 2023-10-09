@@ -1,7 +1,7 @@
 resource "oci_core_security_list" "security-list"{
 
 # Required
-  compartment_id = oci_identity_compartment.dev-compartment.id
+  compartment_id = oci_identity_compartment.staging-compartment.id
   vcn_id = module.vcn.vcn_id
 # Optional
   display_name = "security-list"

@@ -1,5 +1,5 @@
 data "oci_core_images" "os" {
-  compartment_id           = oci_identity_compartment.dev-compartment.id
+  compartment_id           = oci_identity_compartment.staging-compartment.id
   operating_system         = "Canonical Ubuntu"
   operating_system_version = "22.04"
   shape                    = "VM.Standard.A1.Flex"
@@ -11,7 +11,7 @@ resource "oci_core_instance" "control" {
     # Required
     count = var.control_number
     availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-    compartment_id = oci_identity_compartment.dev-compartment.id
+    compartment_id = oci_identity_compartment.staging-compartment.id
     shape = "VM.Standard.A1.Flex"
     display_name = "control${count.index}"
     shape_config {
@@ -42,7 +42,7 @@ resource "oci_core_instance" "worker" {
     # Required
     count = var.worker_number
     availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-    compartment_id = oci_identity_compartment.dev-compartment.id
+    compartment_id = oci_identity_compartment.staging-compartment.id
     shape = "VM.Standard.A1.Flex"
     display_name = "worker${count.index}"
     shape_config {
@@ -63,7 +63,6 @@ resource "oci_core_instance" "worker" {
     } 
     preserve_boot_volume = false
 
-    #sleep to wait for system to be ready
     provisioner "local-exec" {
         command = "IP=${ self.public_ip } SERVER_IP=${ oci_core_instance.control[0].public_ip } NODE_TYPE=${ self.display_name } bash bootstrap.sh"
     }

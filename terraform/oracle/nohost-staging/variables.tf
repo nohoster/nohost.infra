@@ -2,7 +2,6 @@ variable "control_number" {
   type = number
   default = 1
 }
-
 variable "worker_number" {
   type = number
   default = 1

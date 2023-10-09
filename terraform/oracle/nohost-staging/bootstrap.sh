@@ -10,7 +10,7 @@ while ssh_status; ss=$?; [ $ss != 0 ]; do
 done
 
 # Setup config
-ansible-playbook -i "$IP," ../../../ansible/nohost-dev-bootstrap.yaml
+ansible-playbook -i "$IP," ../../../ansible/nohost-staging-bootstrap.yaml
 
 # Bootstrap k3s
 if [[ $NODE_TYPE =~ "worker" ]]; then
@@ -22,7 +22,7 @@ k3sup install --ip $IP\
         --cluster \
         --k3s-channel=stable \
         --k3s-extra-args "--disable-kube-proxy --flannel-backend=none --cluster-cidr=10.42.0.0/16 --disable-network-policy --disable=local-storage" \
-        --local-path $HOME/.kube/nohost-dev
+        --local-path $HOME/.kube/nohost-staging
 elif [[ $NODE_TYPE =~ "control"* ]]; then
 k3sup install --ip IP \
         --user ubuntu \
@@ -30,5 +30,5 @@ k3sup install --ip IP \
         --server-ip $SERVER_IP
         --k3s-channel=stable \
         --k3s-extra-args "--disable-kube-proxy --flannel-backend=none --cluster-cidr=10.42.0.0/16 --disable-network-policy --disable=local-storage" \
-        --local-path $HOME/.kube/nohost-dev
+        --local-path $HOME/.kube/nohost-staging
 fi
