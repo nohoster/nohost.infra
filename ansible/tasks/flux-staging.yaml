@@ -6,5 +6,5 @@
     
 - name: Copy Flux helm chart
   template:
-    src: ../helmcharts/flux.yaml.j2
-    dest: /var/lib/rancher/k3s/server/manifests/flux.yaml
+    src: ../templates/flux-staging.yaml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/flux-staging.yaml

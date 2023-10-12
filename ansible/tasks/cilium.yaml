@@ -6,5 +6,5 @@
     
 - name: Copy Cilium helm chart
   template:
-    src: ../helmcharts/cilium.yaml.j2
+    src: ../templates/cilium.yaml.j2
     dest: /var/lib/rancher/k3s/server/manifests/cilium.yaml

@@ -5,7 +5,8 @@
   hosts: all
   gather_facts: no
   tasks: 
-  - include_tasks: tasks/iptables.yaml
+  - ansible.builtin.hostname:
+      name: "{{ NODE_TYPE }}"
   - include_tasks: tasks/cilium.yaml
-  - ansible.builtin.include_tasks: tasks/flux-staging.yaml
+  - ansible.builtin.include_tasks: tasks/flux-production.yaml
   - ansible.builtin.include_tasks: tasks/vault-token-secret.yaml
