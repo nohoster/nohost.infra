@@ -35,7 +35,7 @@ resource "oci_core_instance" "control" {
 
     #sleep to wait for system to be ready
     provisioner "local-exec" {
-        command = "IP=${ self.public_ip } NODE_TYPE=${ self.display_name } bash bootstrap.sh"
+        command = "IP=${ self.public_ip } NODE_TYPE=${ self.display_name } CLUSTER='staging' bash bootstrap.sh"
     }
 }
 resource "oci_core_instance" "worker" {
@@ -64,6 +64,6 @@ resource "oci_core_instance" "worker" {
     preserve_boot_volume = false
 
     provisioner "local-exec" {
-        command = "IP=${ self.public_ip } SERVER_IP=${ oci_core_instance.control[0].public_ip } NODE_TYPE=${ self.display_name } bash bootstrap.sh"
+        command = "IP=${ self.public_ip } SERVER_IP=${ oci_core_instance.control[0].public_ip } NODE_TYPE=${ self.display_name } CLUSTER='staging' bash bootstrap.sh"
     }
 }

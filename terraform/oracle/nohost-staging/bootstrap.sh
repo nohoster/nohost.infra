@@ -22,13 +22,13 @@ k3sup install --ip $IP\
         --cluster \
         --k3s-channel=stable \
         --k3s-extra-args "--disable-kube-proxy --flannel-backend=none --cluster-cidr=10.42.0.0/16 --disable-network-policy --disable=local-storage" \
-        --local-path $HOME/.kube/nohost-staging
+        --local-path $HOME/.kube/nohost-$CLUSTER
 elif [[ $NODE_TYPE =~ "control"* ]]; then
-k3sup install --ip IP \
+k3sup install --ip $IP \
         --user ubuntu \
         --server \
         --server-ip $SERVER_IP
         --k3s-channel=stable \
         --k3s-extra-args "--disable-kube-proxy --flannel-backend=none --cluster-cidr=10.42.0.0/16 --disable-network-policy --disable=local-storage" \
-        --local-path $HOME/.kube/nohost-staging
+        --local-path $HOME/.kube/nohost-$CLUSTER
 fi
