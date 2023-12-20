@@ -11,7 +11,7 @@ resource "libvirt_volume" "controller-volume" {
 resource "libvirt_domain" "controller-kvm" {
   count = var.control_number
   name   = "control${count.index}-A"
-  memory = "2861"
+  memory = "3815"
   vcpu   = 2
   autostart =true
 
@@ -57,7 +57,7 @@ resource "libvirt_volume" "worker-volume" {
 resource "libvirt_domain" "worker-kvm" {
   count = var.worker_number
   name   = "worker${count.index}-A"
-  memory = "2861"
+  memory = "3815"
   vcpu   = 2
   autostart =true
 
