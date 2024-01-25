@@ -2,7 +2,7 @@
 
 resource "libvirt_volume" "controller-volume" {
   count = var.control_number
-  name           = "controllerA-volume-${count.index}"
+  name           = "controller${terraform.workspace}-volume-${count.index}"
   base_volume_id = libvirt_volume.os_image.id
   pool   = libvirt_pool.pool.name
   size = 10000000000
@@ -10,7 +10,7 @@ resource "libvirt_volume" "controller-volume" {
 
 resource "libvirt_domain" "controller-kvm" {
   count = var.control_number
-  name   = "control${count.index}-A"
+  name   = "control${count.index}-${terraform.workspace}"
   memory = "3815"
   vcpu   = 2
   autostart =true
@@ -22,8 +22,8 @@ resource "libvirt_domain" "controller-kvm" {
   }
 
   network_interface {
-    network_name   = "terraformA-net"
-    hostname = "controllerA-${count.index}"
+    network_name   = "terraform${terraform.workspace}-net"
+    hostname = "controller-${terraform.workspace}${count.index}"
     wait_for_lease = true
   }
 
@@ -40,7 +40,7 @@ resource "libvirt_domain" "controller-kvm" {
   }
 
   provisioner "local-exec" {
-      command = "IP=${ self.network_interface[0].addresses[0] } NODE_TYPE=${ self.name } CLUSTER='A' K3S_SECRET=${var.K3S_SECRET} bash bootstrap.sh"
+      command = "IP=${ self.network_interface[0].addresses[0] } NODE_TYPE=${ self.name } CLUSTER='${terraform.workspace}' K3S_SECRET=${var.K3S_SECRET} bash bootstrap.sh"
     }
 }
 
@@ -48,7 +48,7 @@ resource "libvirt_domain" "controller-kvm" {
 
 resource "libvirt_volume" "worker-volume" {
   count = var.worker_number
-  name           = "workerA-volume-${count.index}"
+  name           = "worker${terraform.workspace}-volume-${count.index}"
   base_volume_id = libvirt_volume.os_image.id
   pool   = libvirt_pool.pool.name
   size = 10000000000
@@ -56,7 +56,7 @@ resource "libvirt_volume" "worker-volume" {
 
 resource "libvirt_domain" "worker-kvm" {
   count = var.worker_number
-  name   = "worker${count.index}-A"
+  name   = "worker${count.index}-${terraform.workspace}"
   memory = "3815"
   vcpu   = 2
   autostart =true
@@ -68,8 +68,8 @@ resource "libvirt_domain" "worker-kvm" {
   }
 
   network_interface {
-    network_name   = "terraformA-net"
-      hostname = "workerA-${count.index}"
+    network_name   = "terraform${terraform.workspace}-net"
+      hostname = "worker${terraform.workspace}-${count.index}"
 
     wait_for_lease = true
   }
@@ -85,6 +85,6 @@ resource "libvirt_domain" "worker-kvm" {
     target_port = "1"
   }
   provisioner "local-exec" {
-       command = "IP=${ self.network_interface[0].addresses[0] } NODE_TYPE=${ self.name } SERVER_IP=${ libvirt_domain.controller-kvm[0].network_interface[0].addresses[0] } K3S_SECRET=${var.K3S_SECRET} CLUSTER='A' bash bootstrap.sh"
+       command = "IP=${ self.network_interface[0].addresses[0] } NODE_TYPE=${ self.name } SERVER_IP=${ libvirt_domain.controller-kvm[0].network_interface[0].addresses[0] } K3S_SECRET=${var.K3S_SECRET} CLUSTER='${terraform.workspace}' bash bootstrap.sh"
     }
 }

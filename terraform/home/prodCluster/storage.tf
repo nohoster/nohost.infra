@@ -1,8 +1,8 @@
 # Define storage volume and pool
 resource "libvirt_pool" "pool" {
-  name = "poolB"
+  name = "pool${terraform.workspace}"
   type = "dir"
-  path = "/home/qemu-poolB"
+  path = "/home/qemu-pool${terraform.workspace}"
 }
 resource "libvirt_volume" "os_image" {
   name   = "ubuntu-min-qcow2"
