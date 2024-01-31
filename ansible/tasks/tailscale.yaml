@@ -1,0 +1,7 @@
+---
+
+- name: Install tailscale
+  shell: curl -fsSL https://tailscale.com/install.sh | sh
+
+- name: Connect node to headscale network
+  shell: sudo tailscale up --login-server https://scale01.nohost.network --authkey {{ lookup('ansible.builtin.env', 'HEADSCALE_TOKEN') }}

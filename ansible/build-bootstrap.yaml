@@ -7,3 +7,4 @@
   tasks: 
   - include_tasks: tasks/iptables.yaml
   - include_tasks: tasks/cilium.yaml
+  - include_tasks: tasks/tailscale.yaml
