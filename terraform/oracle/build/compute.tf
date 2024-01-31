@@ -32,6 +32,11 @@ resource "oci_core_instance" "control" {
         ssh_authorized_keys = var.ssh_authorized_keys
     } 
     preserve_boot_volume = false
+
+    provisioner "local-exec" {
+        command = "IP=${ self.public_ip } NODE_TYPE=${ self.display_name } CLUSTER='build' bash bootstrap.sh"
+    }
+
 }
 resource "oci_core_instance" "worker" {
     # Required
@@ -57,4 +62,9 @@ resource "oci_core_instance" "worker" {
         ssh_authorized_keys = var.ssh_authorized_keys
     } 
     preserve_boot_volume = false
+
+    provisioner "local-exec" {
+        command = "IP=${ self.public_ip } SERVER_IP=${ oci_core_instance.control[0].public_ip } NODE_TYPE=${ self.display_name } CLUSTER='build' bash bootstrap.sh"
+    }
+
 }

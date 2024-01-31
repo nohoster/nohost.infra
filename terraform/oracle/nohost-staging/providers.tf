@@ -1,5 +1,5 @@
 provider "vault" {
-  address = "https://almacen.nohost.network:8200"
+  address = "https://vault.nohost.network"
 }
 
 data "vault_generic_secret" "oci-staging-secrets" {

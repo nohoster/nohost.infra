@@ -33,7 +33,6 @@ resource "oci_core_instance" "control" {
     } 
     preserve_boot_volume = false
 
-    #sleep to wait for system to be ready
     provisioner "local-exec" {
         command = "IP=${ self.public_ip } NODE_TYPE=${ self.display_name } CLUSTER='staging' bash bootstrap.sh"
     }
