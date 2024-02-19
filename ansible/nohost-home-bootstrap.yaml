@@ -6,7 +6,7 @@
   gather_facts: no
   tasks: 
   - ansible.builtin.hostname:
-      name: "{{ NODE_TYPE }}"
+      name: "{{ CLUSTER }}-{{ NODE_TYPE }}"
   - include_tasks: tasks/cilium.yaml
   - ansible.builtin.include_tasks: tasks/flux-production.yaml
   - ansible.builtin.include_tasks: tasks/vault-token-secret.yaml

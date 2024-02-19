@@ -20,5 +20,17 @@ variable "control_number" {
 variable "K3S_SECRET" {
   description = "K3s token"
   type = string
-  default = "CHANGEME"
+  sensitive = true
+}
+variable "GITHUB_TOKEN" {
+  type = string
+  sensitive = true
+}
+variable "VAULT_TOKEN" {
+  type = string
+  sensitive = true
+}
+variable "TAILSCALE_TOKEN" {
+  type = string
+  sensitive = true
 }
