@@ -10,7 +10,7 @@ while ssh_status; ss=$?; [ $ss != 0 ]; do
 done
 
 # Setup config
-ansible-playbook -i "$IP," ../../../ansible/build-bootstrap.yaml
+ansible-playbook -i "$IP," --extra-vars "CLUSTER=$CLUSTER NODE_TYPE=$NODE_TYPE" ../../../ansible/build-bootstrap.yaml
 
 # Bootstrap k3s
 if [[ $NODE_TYPE =~ "worker" ]]; then

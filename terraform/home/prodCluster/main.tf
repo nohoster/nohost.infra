@@ -40,7 +40,16 @@ resource "libvirt_domain" "controller-kvm" {
   }
 
   provisioner "local-exec" {
-      command = "IP=${ self.network_interface[0].addresses[0] } NODE_TYPE=${ self.name } CLUSTER='${terraform.workspace}' K3S_SECRET=${var.K3S_SECRET} bash bootstrap.sh"
+    command = <<EOT
+    IP=${ self.network_interface[0].addresses[0] } \
+    NODE_TYPE=${ self.name } \
+    CLUSTER='PRODUCTION-${terraform.workspace}' \
+    K3S_SECRET=${var.K3S_SECRET} \
+    GITHUB_TOKEN=${ var.GITHUB_TOKEN } \
+    VAULT_TOKEN=${ var.VAULT_TOKEN } \
+    TAILSCALE_TOKEN=${ var.TAILSCALE_TOKEN } \
+    bash bootstrap.sh"
+    EOT
     }
 }
 
@@ -85,6 +94,16 @@ resource "libvirt_domain" "worker-kvm" {
     target_port = "1"
   }
   provisioner "local-exec" {
-       command = "IP=${ self.network_interface[0].addresses[0] } NODE_TYPE=${ self.name } SERVER_IP=${ libvirt_domain.controller-kvm[0].network_interface[0].addresses[0] } K3S_SECRET=${var.K3S_SECRET} CLUSTER='${terraform.workspace}' bash bootstrap.sh"
+       command = <<EOT
+       IP=${ self.network_interface[0].addresses[0] } \
+       NODE_TYPE=${ self.name } \
+       SERVER_IP=${ libvirt_domain.controller-kvm[0].network_interface[0].addresses[0] } \
+       K3S_SECRET=${var.K3S_SECRET} \
+       GITHUB_TOKEN=${ var.GITHUB_TOKEN } \
+       VAULT_TOKEN=${ var.VAULT_TOKEN } \
+       TAILSCALE_TOKEN=${ var.TAILSCALE_TOKEN } \
+       CLUSTER='PRODUCTION-${terraform.workspace}' \
+       bash bootstrap.sh
+       EOT
     }
 }

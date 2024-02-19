@@ -34,7 +34,13 @@ resource "oci_core_instance" "control" {
     preserve_boot_volume = false
 
     provisioner "local-exec" {
-        command = "IP=${ self.public_ip } NODE_TYPE=${ self.display_name } CLUSTER='build' bash bootstrap.sh"
+        command = <<EOT
+        IP=${ self.public_ip } \
+        NODE_TYPE=${ self.display_name } \
+        CLUSTER=build \
+        TAILSCALE_TOKEN=${ var.TAILSCALE_TOKEN } \
+        bash bootstrap.sh
+        EOT
     }
 
 }
@@ -64,7 +70,13 @@ resource "oci_core_instance" "worker" {
     preserve_boot_volume = false
 
     provisioner "local-exec" {
-        command = "IP=${ self.public_ip } SERVER_IP=${ oci_core_instance.control[0].public_ip } NODE_TYPE=${ self.display_name } CLUSTER='build' bash bootstrap.sh"
+        command = <<EOT
+        IP=${ self.public_ip } \
+        NODE_TYPE=${ self.display_name } \
+        CLUSTER=build \
+        TAILSCALE_TOKEN=${ var.TAILSCALE_TOKEN } \
+        bash bootstrap.sh
+        EOT
     }
 
 }

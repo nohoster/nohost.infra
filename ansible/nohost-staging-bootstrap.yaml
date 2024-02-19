@@ -5,6 +5,8 @@
   hosts: all
   gather_facts: no
   tasks: 
+  - ansible.builtin.hostname:
+      name: "{{ CLUSTER }}-{{ NODE_TYPE }}"
   - include_tasks: tasks/iptables.yaml
   - include_tasks: tasks/cilium.yaml
   - ansible.builtin.include_tasks: tasks/flux-staging.yaml
