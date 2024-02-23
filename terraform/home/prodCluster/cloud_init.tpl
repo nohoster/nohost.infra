@@ -1,8 +1,7 @@
 #cloud-config
-# vim: syntax=yaml
 # #
 
-preserve_hostname: true
+hostname: ${ NODE_HOST }
 
 ssh_pwauth: False
 
@@ -11,3 +10,7 @@ ssh_authorized_keys:
 
 ssh_quiet_keygen: true
 ssh_genkeytypes: [rsa, dsa, ecdsa, ed25519]
+
+runcmd:
+  - curl -fsSL https://tailscale.com/install.sh | sh
+  - tailscale up --login-server https://scale01.nohost.network --auth-key ${ TAILSCALE_TOKEN }
