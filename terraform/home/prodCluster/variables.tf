@@ -8,7 +8,7 @@ variable "os_img_url" {
 variable "worker_number" {
   description = "Number of workers"
   type        = number
-  default     = 2
+  default = 2
 }
 
 variable "control_number" {
@@ -17,9 +17,13 @@ variable "control_number" {
   default     = 1
 }
 
+variable "network_address" {
+  type = string
+}
+
 variable "K3S_SECRET" {
   description = "K3s token"
-  type = string
+  type        = string
   sensitive = true
 }
 variable "GITHUB_TOKEN" {
