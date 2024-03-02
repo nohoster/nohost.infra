@@ -1,0 +1,8 @@
+---
+- name: Allow pods and services CIDR
+  community.general.ufw:
+    rule: allow
+    src: '{{ item }}'
+  loop:
+    - 10.42.0.0/16
+    - 10.43.0.0/16
