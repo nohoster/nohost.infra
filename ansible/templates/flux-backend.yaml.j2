@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+
+---
+
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: flux
+  namespace: kube-system
+spec:
+  repo: https://fluxcd-community.github.io/helm-charts
+  chart: flux2
+  targetNamespace: flux-system
+
+---
+
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: flux-sync
+  namespace: kube-system
+spec:
+  repo: https://fluxcd-community.github.io/helm-charts
+  chart: flux2-sync
+  targetNamespace: flux-system
+  valuesContent: |-
+    secret:
+      create: true
+      data:
+        username: "nohoster"
+        password: "{{ lookup('ansible.builtin.env', 'GITHUB_TOKEN') }}"
+    gitRepository:
+      spec:
+        url: "https://github.com/nohoster/nohost.backend"
+        ref:
+          branch: main
+    kustomization:
+      spec:
+        path: "./clusters/production"

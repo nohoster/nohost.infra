@@ -1,0 +1,10 @@
+---
+- name: Create chart path
+  file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    
+- name: Copy Flux helm chart
+  template:
+    src: ../templates/flux-backend.yaml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/flux-backend.yaml

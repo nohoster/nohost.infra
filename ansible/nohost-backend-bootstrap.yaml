@@ -1,0 +1,11 @@
+---
+- name: Bootstrap k3s cluster
+  become: yes
+  # remote_user: ubuntu
+  hosts: all
+  gather_facts: no
+  tasks: 
+  - include_tasks: tasks/cilium.yaml
+  - ansible.builtin.include_tasks: tasks/flux-backend.yaml
+  - ansible.builtin.include_tasks: tasks/vault-token-secret.yaml
+  - ansible.builtin.include_tasks: tasks/UFW-cluster-CIDR-rules.yaml
