@@ -29,7 +29,8 @@ resource "libvirt_domain" "controller-kvm" {
 
   provisioner "local-exec" {
     command = <<EOT
-    IP=${self.network_interface[0].hostname} \
+    HOSTNAME=${self.network_interface[0].hostname} \
+    IP=${self.network_interface[0].addresses[1]} \
     NODE_TYPE=control${count.index} \
     CLUSTER='production-${terraform.workspace}' \
     K3S_SECRET=${var.K3S_SECRET} \
@@ -70,9 +71,10 @@ resource "libvirt_domain" "worker-kvm" {
   }
   provisioner "local-exec" {
     command = <<EOT
-       IP=${self.network_interface[0].hostname} \
+       HOSTNAME=${self.network_interface[0].hostname} \
+       IP=${self.network_interface[0].addresses[1]} \
        NODE_TYPE=worker${count.index} \
-       SERVER_IP=${libvirt_domain.controller-kvm[0].network_interface[0].addresses[0]} \
+       SERVER_IP=${libvirt_domain.controller-kvm[0].network_interface[0].addresses[1]} \
        K3S_SECRET=${var.K3S_SECRET} \
        GITHUB_TOKEN=${var.GITHUB_TOKEN} \
        VAULT_TOKEN=${var.VAULT_TOKEN} \

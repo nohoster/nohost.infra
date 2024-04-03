@@ -17,8 +17,14 @@ variable "control_number" {
   default     = 1
 }
 
-variable "network_address" {
+variable "ipv4" {
   type = string
+  # default = "192.168.150.0/24"
+}
+
+variable "ipv6" {
+  type = string
+  # default = "fd51:171e:228b:2::/64"
 }
 
 variable "K3S_SECRET" {

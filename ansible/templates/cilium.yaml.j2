@@ -13,7 +13,7 @@ spec:
       replicas: 1
     # kubeproxy replacement config
     kubeProxyReplacement: true
-    k8sServiceHost: "{{ ansible_play_hosts[0] }}"
+    k8sServiceHost: "{{ lookup('ansible.builtin.env', 'IP') }}"
     k8sServicePort: "6443"
     # hubble config
     hubble:
@@ -31,3 +31,5 @@ spec:
       operator:
         clusterPoolIPv4PodCIDRList: "10.42.0.0/16"
         clusterPoolIPv4MaskSize: 24
+    ipv6:
+      enabled: true
