@@ -1,14 +1,14 @@
 variable "os_img_url" {
   description = "URL to the OS image"
   type        = string
-  #default     = "https://cloud-images.ubuntu.com/minimal/releases/jammy/release/ubuntu-22.04-minimal-cloudimg-amd64.img"
-  default = "/home/images/ubuntu-22.04-server-cloudimg-amd64.img"
+  #default     = "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-24.04-server-cloudimg-amd64.img"
+  default = "/home/images/ubuntu-24.04-server-cloudimg-amd64.img"
 }
 
 variable "worker_number" {
   description = "Number of workers"
   type        = number
-  default = 2
+  default     = 2
 }
 
 variable "control_number" {
@@ -18,23 +18,31 @@ variable "control_number" {
 }
 
 variable "network_address" {
-  type = string
+  type = map(string)
+  default = {
+    A = "192.168.130.0/24"
+    B = "192.168.140.0/24"
+  }
 }
+
+# variable "network_address" {
+#   type = string
+# }
 
 variable "K3S_SECRET" {
   description = "K3s token"
   type        = string
-  sensitive = true
+  # sensitive = true
 }
 variable "GITHUB_TOKEN" {
   type = string
-  sensitive = true
+  # sensitive = true
 }
 variable "VAULT_TOKEN" {
   type = string
-  sensitive = true
+  # sensitive = true
 }
 variable "TAILSCALE_TOKEN" {
   type = string
-  sensitive = true
+  # sensitive = true
 }
